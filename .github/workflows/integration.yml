@@ -41,6 +41,13 @@ jobs:
           uses: actions/setup-node@v1
           with:
             node-version: '10.x'
+        - name: Restore Node cache
+          uses: actions/cache@preview
+          with:
+            path: node_modules
+            key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+            restore-keys: |
+              ${{ runner.os }}-node-
         - name: NPM Install
           run: npm ci
         - name: Lint javascript
