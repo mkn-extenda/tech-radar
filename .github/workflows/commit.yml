@@ -40,14 +40,18 @@ jobs:
           with:
             node-version: '10.x'
         - name: Restore Node cache
+          id: cache
           uses: actions/cache@preview
           with:
             path: node_modules
             key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
             restore-keys: |
               ${{ runner.os }}-node-
+
         - name: NPM Install
+          if: steps.cache.outputs.cache-hit != 'true'
           run: npm install
+
         - name: Lint javascript
           run: npm run lint:js
         - name: Unit tests
